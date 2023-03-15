@@ -7,7 +7,7 @@ def output_formatter(results):
             "id": result[0],
             "summary": result[1],
             "description": result[2],
-            "status": result[3],
+            "status_id": result[3],
             "active": result[4]
         }
         out.append(temp)
@@ -29,15 +29,15 @@ def select_by_id(pk):
     conn.close()
     return output_formatter(results)[0]
 
-def insert(data):
+def insert(task_data):
     task_tuple = (
         task_data.get("summary"),
         task_data.get("description"),
-        task_data.get("status"),
+        task_data.get("status_id"),
         task_data.get("active")
     )
     statement = """
-        INSERT INTO task (summary, description, status, active)
+        INSERT INTO task (summary, description, status_id, active)
         VALUES (?, ?, ?, ?)
     """
     conn = get_db()
@@ -49,7 +49,7 @@ def update(task_data, pk):
     task_tuple = (
         task_data.get("summary"),
         task_data.get("description"),
-        task_data.get("status"),
+        task_data.get("status_id"),
         task_data.get("active"),
         pk
     )
@@ -57,7 +57,7 @@ def update(task_data, pk):
         UPDATE task
         SET summary = ?,
             description = ?,
-            status = ?,
+            status_id = ?,
             active = ?
         WHERE id = ?
     """
